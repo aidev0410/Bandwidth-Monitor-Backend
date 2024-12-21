@@ -1,0 +1,39 @@
+{
+  "name": "express-typescript-template",
+  "version": "1.0.0",
+  "description": "A template to build a backend project using Express and Typescript.",
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf ./dist && tsc --skipLibCheck",
+    "start": "node dist/main.js",
+    "dev": "nodemon"
+  },
+  "_moduleAliases": {
+    "@": "dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-async-handler": "^1.2.0",
+    "module-alias": "^2.2.3",
+    "morgan": "^1.10.0",
+    "winston": "^3.14.2",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.7.4",
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.7",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.6.2"
+  }
+}
