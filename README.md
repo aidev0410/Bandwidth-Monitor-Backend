@@ -26,6 +26,15 @@ Backend of Bandwidth Monitor System
    ```env
    PORT="Port to host project"
    HOST="Host address"
+
+   DB_HOST="Database host address"
+   DB_PORT="Database port"
+   DB_USER="Database username"
+   DB_PASSWORD="Database password"
+   DB_NAME="Database name"
+
+   JWT_SECRET="Access Token Secret Value"
+   JWT_REFRESH_SECRET="Refresh Token Secret Value"
    ```
 
 3. Run project
