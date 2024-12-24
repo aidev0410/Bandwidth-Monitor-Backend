@@ -1,5 +1,5 @@
 {
-  "name": "express-typescript-template",
+  "name": "bandwidth-monitor-backend",
   "version": "1.0.0",
   "description": "A template to build a backend project using Express and Typescript.",
   "main": "main.ts",
