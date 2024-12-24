@@ -1,8 +1,6 @@
-# Express Typescript Template
+# Bandwidth Monitor Backend
 
-A template to build a backend project using Express and Typescript.
-
-## Tasks
+Backend of Bandwidth Monitor System
 
 ## Environment
 
