@@ -36,6 +36,10 @@ class User {
     select: false,
   })
   updatedAt: Date;
+
+  getUser() {
+    return { id: this.id, role: this.role, username: this.username };
+  }
 }
 
 export default User;

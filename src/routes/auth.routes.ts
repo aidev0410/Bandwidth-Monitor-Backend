@@ -55,7 +55,7 @@ router.post(
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({ id: user.id, role: user.role, username: user.username });
+    res.json(user.getUser());
   })
 );
 
@@ -97,11 +97,7 @@ router.post(
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.json({
-      id: newUser.id,
-      role: newUser.role,
-      username: newUser.username,
-    });
+    res.json(newUser.getUser());
   })
 );
 

@@ -5,7 +5,7 @@ import { UserRole } from "../utils/type";
 const userRepository = AppDataSource.getRepository(User);
 
 export const getUserByUsername = async (username: string) => {
-  return await userRepository.findOne({ where: { username } });
+  return await userRepository.findOneBy({ username });
 };
 
 export const createNewUser = async (
