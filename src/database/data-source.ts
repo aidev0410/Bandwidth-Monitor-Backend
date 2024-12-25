@@ -4,6 +4,7 @@ import { createDatabase } from "typeorm-extension";
 
 import { ENV } from "../utils/constants";
 import User from "../entities/User";
+import Client from "../entities/Client";
 import Logger from "../utils/logger";
 
 const options: DataSourceOptions = {
@@ -13,7 +14,7 @@ const options: DataSourceOptions = {
   username: ENV.DB_USER,
   password: ENV.DB_PASSWORD,
   database: ENV.DB_NAME,
-  entities: { User },
+  entities: { User, Client },
 };
 
 const AppDataSource = new DataSource(options);
