@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from "typeorm";
 import User from "./User";
 
 @Entity("bandwidth")
@@ -6,7 +12,7 @@ class Bandwidth {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "date", nullable: true })
+  @Column({ type: "date" })
   date: Date;
 
   @Column()
@@ -17,6 +23,13 @@ class Bandwidth {
 
   @Column({ type: "bigint", default: 0 })
   usage: number;
+
+  @CreateDateColumn({
+    type: "timestamptz",
+    default: () => "CURRENT_TIMESTAMP",
+    select: false,
+  })
+  createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.bandwidths)
   user: User;
