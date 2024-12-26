@@ -43,7 +43,7 @@ export const addBandwidth = async (
 };
 
 export const getBandwidthMonthlyData = async (year: number, month: number) => {
-  const data = await bandWidthRepository
+  const dailyData = await bandWidthRepository
     .createQueryBuilder("bandwidth")
     .select("bandwidth.date", "date")
     .addSelect("bandwidth.ip", "ip")
@@ -57,7 +57,7 @@ export const getBandwidthMonthlyData = async (year: number, month: number) => {
     .addOrderBy("bandwidth.ip")
     .getRawMany();
 
-  const totalIp = await bandWidthRepository
+  const totalIpData = await bandWidthRepository
     .createQueryBuilder("bandwidth")
     .select("bandwidth.ip", "ip")
     .addSelect("SUM(bandwidth.runtime)", "runtime")
@@ -68,7 +68,7 @@ export const getBandwidthMonthlyData = async (year: number, month: number) => {
     .orderBy("bandwidth.ip")
     .getRawMany();
 
-  const totalDate = await bandWidthRepository
+  const totalDateData = await bandWidthRepository
     .createQueryBuilder("bandwidth")
     .select("bandwidth.date", "date")
     .addSelect("SUM(bandwidth.runtime)", "runtime")
@@ -86,6 +86,31 @@ export const getBandwidthMonthlyData = async (year: number, month: number) => {
     .where("EXTRACT(year from bandwidth.date) = :year", { year })
     .andWhere("EXTRACT(month from bandwidth.date) = :month", { month })
     .getRawOne();
+
+  const data: Record<string, Record<string, BandwidthInfo>> = {};
+  dailyData.forEach((info) => {
+    if (!data[info.ip]) {
+      data[info.ip] = {};
+    }
+    data[info.ip][info.date.toISOString().split("T")[0]] = {
+      runtime: info.runtime,
+      usage: info.usage,
+    };
+  });
+  let totalIp: Record<string, BandwidthInfo> = {};
+  totalIpData.forEach((info) => {
+    totalIp[info.ip] = {
+      runtime: info.runtime,
+      usage: info.usage,
+    };
+  });
+  let totalDate: Record<string, BandwidthInfo> = {};
+  totalDateData.forEach((info) => {
+    totalDate[info.date.toISOString().split("T")[0]] = {
+      runtime: info.runtime,
+      usage: info.usage,
+    };
+  });
 
   return { data, totalIp, totalDate, total };
 };
