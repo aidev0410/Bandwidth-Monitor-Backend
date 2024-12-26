@@ -114,3 +114,19 @@ export const getBandwidthMonthlyData = async (year: number, month: number) => {
 
   return { data, totalIp, totalDate, total };
 };
+
+export const checkStatus = async () => {
+  const data = await bandWidthRepository
+    .createQueryBuilder("bandwidth")
+    .select("bandwidth.ip", "ip")
+    .addSelect("MAX(bandwidth.createdAt)", "createdAt")
+    .groupBy("ip")
+    .orderBy("ip")
+    .getRawMany();
+  const current = new Date();
+  return data.map((info) => ({
+    ip: info.ip,
+    status:
+      Math.round((current.getTime() - info.createdAt.getTime()) / 1000) <= 60,
+  }));
+};
