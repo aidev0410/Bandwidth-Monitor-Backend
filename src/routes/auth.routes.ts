@@ -62,7 +62,7 @@ router.post(
 router.post(
   "/signup",
   asyncHandler(async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { username, password, name, ip } = req.body;
 
     const user = await getUserByUsername(username);
     if (user) {
@@ -70,7 +70,12 @@ router.post(
       return;
     }
 
-    const newUser = await createNewUser(username, await hashPassword(password));
+    const newUser = await createNewUser(
+      username,
+      await hashPassword(password),
+      name,
+      ip
+    );
 
     const accessToken = generateToken(
       newUser.id,

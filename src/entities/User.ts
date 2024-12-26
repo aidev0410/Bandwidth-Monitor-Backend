@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
 
 import { UserRole } from "../utils/type";
+import Bandwidth from "./Bandwidth";
 
 @Entity("users")
 class User {
@@ -18,6 +20,21 @@ class User {
 
   @Column()
   password: string;
+
+  @Column({ unique: true })
+  name: string;
+
+  @Column({ unique: true })
+  ip: string;
+
+  @Column({ type: "bigint", nullable: true })
+  limit: number;
+
+  @Column({ default: false })
+  status: boolean;
+
+  @Column({ type: "timestamptz", nullable: true })
+  lastAccessTime: Date;
 
   @Column({ type: "enum", enum: ["admin", "user"], default: "user" })
   role: UserRole;
@@ -37,8 +54,20 @@ class User {
   })
   updatedAt: Date;
 
+  @OneToMany(() => Bandwidth, (bandwidth) => bandwidth.user)
+  bandwidths: Bandwidth[];
+
   getUser() {
-    return { id: this.id, role: this.role, username: this.username };
+    return {
+      id: this.id,
+      username: this.username,
+      role: this.role,
+      name: this.name,
+      ip: this.ip,
+      limit: this.limit,
+      status: this.status,
+      lastAccessTime: this.lastAccessTime,
+    };
   }
 }
 

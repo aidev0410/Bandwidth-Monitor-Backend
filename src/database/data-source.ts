@@ -4,7 +4,7 @@ import { createDatabase } from "typeorm-extension";
 
 import { ENV } from "../utils/constants";
 import User from "../entities/User";
-import Client from "../entities/Client";
+import Bandwidth from "../entities/Bandwidth";
 import Logger from "../utils/logger";
 
 const options: DataSourceOptions = {
@@ -14,7 +14,10 @@ const options: DataSourceOptions = {
   username: ENV.DB_USER,
   password: ENV.DB_PASSWORD,
   database: ENV.DB_NAME,
-  entities: { User, Client },
+  entities: { User, Bandwidth },
+  extra: {
+    timezone: "Asia/Tokyo",
+  },
 };
 
 const AppDataSource = new DataSource(options);
