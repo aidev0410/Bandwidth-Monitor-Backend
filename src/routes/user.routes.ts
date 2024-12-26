@@ -1,21 +1,38 @@
 import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
 
-import { updateUser, deleteUser, getAllUsers } from "../services/user.services";
-import { authorizeRole } from "../middlewares/authentication";
+import {
+  updateUser,
+  deleteUser,
+  getAllUsers,
+  getAllUserIps,
+} from "../services/user.services";
+import {
+  authenticateToken,
+  authorizeRole,
+} from "../middlewares/authentication";
 
 export const router = Router();
 
 router.get(
   "",
+  authenticateToken,
   authorizeRole(["admin"]),
   asyncHandler(async (_: Request, res: Response) => {
     res.json(await getAllUsers());
   })
 );
 
+router.get(
+  "/ips",
+  asyncHandler(async (_: Request, res: Response) => {
+    res.json(await getAllUserIps());
+  })
+);
+
 router.put(
   "/:id",
+  authenticateToken,
   asyncHandler(async (req: any, res: Response) => {
     const { username, name, ip, limit } = req.body;
     const { id } = req.params;
@@ -32,6 +49,7 @@ router.put(
 
 router.delete(
   "/:id",
+  authenticateToken,
   authorizeRole(["admin"]),
   asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;

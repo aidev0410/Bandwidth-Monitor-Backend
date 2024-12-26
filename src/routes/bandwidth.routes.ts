@@ -25,21 +25,6 @@ router.post(
   })
 );
 
-router.post(
-  "/add",
-  asyncHandler(async (req: Request, res: Response) => {
-    const { ip, infos } = req.body;
-    Logger.info(req.body);
-    const user = await getUserByIp(ip);
-    if (!user) {
-      res.status(404).send("User is not existing.");
-      return;
-    }
-    await addBandwidth(ip, infos, user);
-    res.send("Add bandwith information successfully.");
-  })
-);
-
 router.get(
   "/:year/:month",
   asyncHandler(async (req: Request, res: Response) => {
