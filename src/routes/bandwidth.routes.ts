@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import { getUserByIp } from "../services/user.services";
 import {
   addBandwidth,
+  checkStatus,
   getBandwidthMonthlyData,
 } from "../services/bandwidth.services";
 import Logger from "../utils/logger";
@@ -22,6 +23,13 @@ router.post(
     }
     await addBandwidth(ip, infos, user);
     res.send("Add bandwith information successfully.");
+  })
+);
+
+router.get(
+  "/status",
+  asyncHandler(async (_: Request, res: Response) => {
+    res.json(await checkStatus());
   })
 );
 

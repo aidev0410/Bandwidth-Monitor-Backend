@@ -31,11 +31,6 @@ export const getAllUsers = async () => {
   });
 };
 
-export const getAllUserIps = async () => {
-  const users = await getAllUsers();
-  return users.map((user) => user.ip);
-};
-
 export const createNewUser = async (
   username: string,
   password: string,

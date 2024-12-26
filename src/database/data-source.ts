@@ -15,9 +15,6 @@ const options: DataSourceOptions = {
   password: ENV.DB_PASSWORD,
   database: ENV.DB_NAME,
   entities: { User, Bandwidth },
-  extra: {
-    timezone: "Asia/Tokyo",
-  },
 };
 
 const AppDataSource = new DataSource(options);

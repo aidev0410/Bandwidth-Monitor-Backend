@@ -1,12 +1,7 @@
 import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
 
-import {
-  updateUser,
-  deleteUser,
-  getAllUsers,
-  getAllUserIps,
-} from "../services/user.services";
+import { updateUser, deleteUser, getAllUsers } from "../services/user.services";
 import {
   authenticateToken,
   authorizeRole,
@@ -20,13 +15,6 @@ router.get(
   authorizeRole(["admin"]),
   asyncHandler(async (_: Request, res: Response) => {
     res.json(await getAllUsers());
-  })
-);
-
-router.get(
-  "/ips",
-  asyncHandler(async (_: Request, res: Response) => {
-    res.json(await getAllUserIps());
   })
 );
 

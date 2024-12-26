@@ -27,7 +27,6 @@ class Bandwidth {
   @CreateDateColumn({
     type: "timestamptz",
     default: () => "CURRENT_TIMESTAMP",
-    select: false,
   })
   createdAt: Date;
 
