@@ -30,12 +30,6 @@ class User {
   @Column({ type: "bigint", nullable: true })
   limit: number;
 
-  @Column({ default: false })
-  status: boolean;
-
-  @Column({ type: "timestamptz", nullable: true })
-  lastAccessTime: Date;
-
   @Column({ type: "enum", enum: ["admin", "user"], default: "user" })
   role: UserRole;
 
@@ -65,8 +59,6 @@ class User {
       name: this.name,
       ip: this.ip,
       limit: this.limit,
-      status: this.status,
-      lastAccessTime: this.lastAccessTime,
     };
   }
 }

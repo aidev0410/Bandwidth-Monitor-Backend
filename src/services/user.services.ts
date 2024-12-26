@@ -24,8 +24,6 @@ export const getAllUsers = async () => {
       name: true,
       ip: true,
       limit: true,
-      status: true,
-      lastAccessTime: true,
     },
     order: {
       ip: "ASC",
@@ -80,33 +78,5 @@ export const deleteUser = async (id: string) => {
 
   return await userRepository.manager.transaction(async (manager) => {
     return await manager.remove(user);
-  });
-};
-
-export const updateUserLastAccessTime = async (
-  id: string,
-  lastAccessTime: Date
-) => {
-  const user = await getUserById(id);
-  if (!user) {
-    return null;
-  }
-  user.lastAccessTime = lastAccessTime;
-  user.status = true;
-
-  return await userRepository.manager.transaction(async (manager) => {
-    return await manager.save(user);
-  });
-};
-
-export const updateUserStatus = async (id: string, status: boolean) => {
-  const user = await getUserById(id);
-  if (!user) {
-    return null;
-  }
-  user.status = status;
-
-  return await userRepository.manager.transaction(async (manager) => {
-    return await manager.save(user);
   });
 };
