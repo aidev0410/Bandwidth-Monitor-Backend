@@ -3,7 +3,7 @@ import asyncHandler from "express-async-handler";
 
 import { router as authRouter } from "./auth.routes";
 import { router as userRouter } from "./user.routes";
-import { router as bandwidthRouter } from "./bandwidth.routes";
+import { router as networkRouter } from "./network.routes";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get(
   })
 );
 router.use("/auth", authRouter);
-router.use("/network", bandwidthRouter);
+router.use("/network", networkRouter);
 router.use("/users", userRouter);
 
 export default router;
