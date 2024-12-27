@@ -19,7 +19,19 @@ export const ENV = {
 
   JWT_SECRET: process.env.JWT_SECRET ?? "",
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET ?? "",
+
+  ROCKET_CHAT_USER: process.env.ROCKET_CHAT_USER ?? "",
+  ROCKET_CHAT_PASSWORD: process.env.ROCKET_CHAT_PASSWORD ?? "",
+  ROCKET_CHAT_CHANNEL: process.env.ROCKET_CHAT_CHANNEL ?? "",
+  ROCKET_CHAT_SERVER_URL: process.env.ROCKET_CHAT_SERVER_URL ?? "",
 };
 
 export const ACCESS_TOKEN_EXPIRES_IN = "15m";
 export const REFRESH_TOKEN_EXPIRES_IN = "7d";
+
+export const UNIT = {
+  ONE_MB: 1024 * 1024,
+  HALF_GB: 512 * 1024 * 1024,
+};
+
+export const LIMITS = [500, 200, 100];

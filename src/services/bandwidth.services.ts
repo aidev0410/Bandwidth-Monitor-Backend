@@ -2,6 +2,8 @@ import Bandwidth from "../entities/Bandwidth";
 import AppDataSource from "../database/data-source";
 import { BandwidthInfo } from "../utils/type";
 import User from "../entities/User";
+import { bytesToGB, sendRocketChatMessage } from "../utils/helper";
+import { LIMITS, UNIT } from "../utils/constants";
 
 const bandWidthRepository = AppDataSource.getRepository(Bandwidth);
 
@@ -31,6 +33,7 @@ export const addBandwidth = async (
 ) => {
   await Promise.all(
     Object.keys(infos).map(async (date) => {
+      const prevUsage = await getBandwidthUsage(ip, date);
       await createBandwidth(
         new Date(date),
         ip,
@@ -38,6 +41,10 @@ export const addBandwidth = async (
         Math.round(infos[date].usage),
         user
       );
+      const curUsage = prevUsage + Math.round(infos[date].usage);
+
+      await sendUsageAlert(user.name, prevUsage, curUsage);
+      await sendLimitAlert(user.name, user.limit, prevUsage, curUsage);
     })
   );
 };
@@ -129,4 +136,48 @@ export const checkStatus = async () => {
     status:
       Math.round((current.getTime() - info.createdAt.getTime()) / 1000) <= 60,
   }));
+};
+
+export const getBandwidthUsage = async (ip: string, date: string) => {
+  const data = await bandWidthRepository
+    .createQueryBuilder("bandwidth")
+    .select("SUM(bandwidth.usage)", "usage")
+    .where("bandwidth.ip = :ip", { ip })
+    .andWhere("bandwidth.date = :date", { date })
+    .getRawOne();
+  return data ? Number(data["usage"]) : 0;
+};
+
+export const sendUsageAlert = async (
+  name: string,
+  prevUsage: number,
+  curUsage: number
+) => {
+  if (bytesToGB(prevUsage) < bytesToGB(curUsage)) {
+    await sendRocketChatMessage(
+      name,
+      `You used ${bytesToGB(
+        curUsage
+      )}GB. Please take care about your bandwidth.`
+    );
+  }
+};
+
+export const sendLimitAlert = async (
+  name: string,
+  limit: number,
+  prevUsage: number,
+  curUsage: number
+) => {
+  await Promise.all(
+    LIMITS.map(async (l) => {
+      const bytes = l * UNIT.ONE_MB;
+      if (limit - prevUsage > bytes && limit - curUsage <= bytes) {
+        await sendRocketChatMessage(
+          name,
+          `Only ${l}MB is remaining on your side.`
+        );
+      }
+    })
+  );
 };
